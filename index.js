@@ -1,27 +1,32 @@
 require('dotenv').config();
 const axios = require('axios');
-const cheerio = require('cheerio');
-const twilio = require('twilio')(process.env.TWILIO_ID, process.env.TWILIO_TOKEN);
-const consulate = 'https://app.bookitit.com/en/hosteds/widgetdefault/275f65e80ce06aaf5cd24cebd11311897#selectservice/bkt277112';
 const fs = require('fs');
+
+TWILIO_ID = process.env.TWILIO_ID;
+TWILIO_TOKEN = process.env.TWILIO_TOKEN;
+APPOINTMENT_ENDPOINT = process.env.APPOINTMENT_ENDPOINT;
+RECIPIENT_PHONE_NUMBER = process.env.RECIPIENT_PHONE_NUMBER;
+SENDER_PHONE_NUMBER = process.env.SENDER_PHONE_NUMBER;
+LOG_FILE = process.env.LOG_FILE;
+
+const twilio = require('twilio')(TWILIO_ID, TWILIO_TOKEN);
 
   /////////////////////
  // -- HELPERS ---- //
 /////////////////////
 
 const log = (info) => {
-  const logFile = process.env.LOG_FILE;
   const formattedInfo = `
     -------------------------
     ${info}
     Run time: ${new Date().toString()}
     -------------------------
   `;
-  fs.exists(logFile, exists => {
+  fs.exists(LOG_FILE, exists => {
     if (!exists) {
-      fs.writeFile(logFile, null, err => err && console.error);
+      fs.writeFile(LOG_FILE, null, err => err && console.error);
     }
-    fs.appendFile(logFile, formattedInfo, err => err && console.error);
+    fs.appendFile(LOG_FILE, formattedInfo, err => err && console.error);
   });
 };
 
@@ -43,8 +48,8 @@ const sendText = (body) => {
   twilio.messages
     .create({
        body: body,
-       from: '+14159917297',
-       to: '+15102891955'
+       from: SENDER_PHONE_NUMBER,
+       to: RECIPIENT_PHONE_NUMBER
      })
     .then(message => console.log(message.sid))
     .done();
@@ -69,7 +74,7 @@ const handleScheduleData = (response) => {
 const main = () => {
   axios({
     method: 'get',
-    url: `${process.env.APPOINTMENT_ENDPOINT}${Date.now()}`
+    url: `${APPOINTMENT_ENDPOINT}${Date.now()}`
   })
   .then(handleScheduleData)
   .catch(log);
