@@ -1,0 +1,17 @@
+{
+  "name": "la-spanish-consulate-visa-apt",
+  "version": "1.0.0",
+  "description": "Get that Appointment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pete Jeffryes",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "dotenv": "^5.0.1",
+    "twilio": "^3.17.1"
+  }
+}
