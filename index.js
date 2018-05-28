@@ -24,7 +24,7 @@ const log = (info) => {
   `;
   fs.exists(LOG_FILE, exists => {
     if (!exists) {
-      fs.writeFile(LOG_FILE, null, err => err && console.error);
+      fs.writeFile(LOG_FILE, 'Log File \n', err => err && console.error);
     }
     fs.appendFile(LOG_FILE, formattedInfo, err => err && console.error);
   });
