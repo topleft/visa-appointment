@@ -10,13 +10,13 @@ const fs = require('fs');
 /////////////////////
 
 const log = (info) => {
+  const logFile = process.env.LOG_FILE;
   const formattedInfo = `
     -------------------------
     ${info}
     Run time: ${new Date().toString()}
     -------------------------
   `;
-  const logFile = process.env.LOG_FILE;
   fs.exists(logFile, exists => {
     if (!exists) {
       fs.writeFile(logFile, null, err => err && console.error);
@@ -39,10 +39,10 @@ const findEarliestAppointments = (data) => {
   return availability;
 };
 
-const sendText = (message) => {
+const sendText = (body) => {
   twilio.messages
     .create({
-       body: message,
+       body: body,
        from: '+14159917297',
        to: '+15102891955'
      })
